@@ -57,12 +57,13 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
 
       try {
+        const currentHistory = [...messages, userMsg];
         const result = await processMessage({
           text,
           sessionId,
           userId,
           settings,
-          history: messages,
+          history: currentHistory,
         });
 
         if (result.requiresConfirmation && result.confirmationId && result.pendingIntent) {

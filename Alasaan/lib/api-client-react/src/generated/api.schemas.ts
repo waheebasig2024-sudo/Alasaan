@@ -8,3 +8,18 @@
 export interface HealthStatus {
   status: string;
 }
+
+export type GeminiChatRequestHistoryItem = { [key: string]: unknown };
+
+export interface GeminiChatRequest {
+  message: string;
+  history?: GeminiChatRequestHistoryItem[];
+  systemPrompt?: string;
+  model?: string;
+}
+
+export interface GeminiChatResponse {
+  text?: string;
+  success: boolean;
+  error?: string;
+}

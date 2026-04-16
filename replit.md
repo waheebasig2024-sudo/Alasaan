@@ -4,7 +4,7 @@
 Native Android AI personal assistant built with React Native + Expo + TypeScript.
 - **Language**: Arabic (RTL first), supports English fallback
 - **Platform**: Android (min SDK 28), web preview via Expo Go
-- **AI Backend**: Gemini 1.5 Flash via API server proxy
+- **AI Backend**: Gemini via managed server proxy, no hardcoded API keys
 
 ## Architecture
 
@@ -46,6 +46,8 @@ User Input → Command Parser → Intent Classifier
   /src/routes/
     gemini.ts             ← POST /api/gemini/chat (Gemini proxy)
     health.ts             ← GET /health
+
+/Alasaan/AlHassanApp/     ← Exact Android-first app structure requested by user
 ```
 
 ## Tools Available (18+)
@@ -64,7 +66,8 @@ User Input → Command Parser → Intent Classifier
 - **Direction**: RTL (Arabic first)
 
 ## Environment Variables Required
-- `GEMINI_API_KEY` - Google Gemini API key (set in Replit Secrets for api-server)
+- `AI_INTEGRATIONS_GEMINI_BASE_URL` - managed Gemini base URL
+- `AI_INTEGRATIONS_GEMINI_API_KEY` - managed Gemini compatibility key
 - `PORT` - Auto-set by Replit
 - `REPLIT_DEV_DOMAIN` - Auto-set by Replit
 - `EXPO_PUBLIC_DOMAIN` - Auto-set via workflow config
@@ -86,6 +89,7 @@ User Input → Command Parser → Intent Classifier
 - Tools screen: ✅ Complete
 - Settings screen: ✅ Complete
 - Core pipeline: ✅ Complete
-- Gemini API proxy: ✅ Complete (needs GEMINI_API_KEY secret)
+- Gemini API proxy: ✅ Complete via managed Gemini integration
 - 18+ tools: ✅ Complete
 - Memory system: ✅ Complete
+- Exact `AlHassanApp/` structure: ✅ Complete

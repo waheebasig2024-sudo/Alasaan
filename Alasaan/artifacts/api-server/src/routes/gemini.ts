@@ -1,30 +1,8 @@
 import { Router } from "express";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ai } from "@workspace/integrations-gemini-ai";
+import { logger } from "../lib/logger";
 
 const router = Router();
-
-// Built-in API key pool with automatic rotation on quota exhaustion
-const BUILTIN_KEYS = [
-  "AIzaSyCzUgX5QA9keBCKs8vtJ8KwaqJLZzW4bGA",
-  "AIzaSyCG95BxiM7DY-X6_hhIlkqsbLNXDx4G6dw",
-  "AIzaSyB-ea4B-GjiFNoVpaMJeYDgf6KZ6eeGjJs",
-];
-
-let currentKeyIndex = 0;
-
-function getNextKey(): string | null {
-  // Try env var first, then fall back to built-in pool
-  if (process.env.GEMINI_API_KEY) {
-    return process.env.GEMINI_API_KEY;
-  }
-  if (BUILTIN_KEYS.length === 0) return null;
-  return BUILTIN_KEYS[currentKeyIndex % BUILTIN_KEYS.length];
-}
-
-function rotateKey(): void {
-  currentKeyIndex = (currentKeyIndex + 1) % BUILTIN_KEYS.length;
-  console.log(`[gemini] Rotating to key index ${currentKeyIndex}`);
-}
 
 function isQuotaError(error: unknown): boolean {
   if (error instanceof Error) {
@@ -40,47 +18,47 @@ function isQuotaError(error: unknown): boolean {
   return false;
 }
 
-async function askGeminiWithRotation(
+function normalizeGeminiHistory(history: unknown[]): Array<{
+  role: "user" | "model";
+  parts: Array<{ text: string }>;
+}> {
+  if (!Array.isArray(history)) return [];
+
+  return history
+    .map((item) => {
+      if (!item || typeof item !== "object") return null;
+      const entry = item as { role?: string; parts?: Array<{ text?: string }> };
+      const role = entry.role === "assistant" || entry.role === "model" ? "model" : "user";
+      const text = entry.parts?.map((part) => part.text).filter(Boolean).join("\n");
+      if (!text) return null;
+      return { role, parts: [{ text }] };
+    })
+    .filter((item): item is { role: "user" | "model"; parts: Array<{ text: string }> } => item !== null);
+}
+
+async function askGeminiSafely(
   message: string,
   history: unknown[],
   systemPrompt: string | undefined,
-  model: string,
-  attemptsLeft = BUILTIN_KEYS.length
+  model: string
 ): Promise<string> {
-  const apiKey = getNextKey();
-  if (!apiKey) throw new Error("لا توجد مفاتيح Gemini API متاحة");
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const genModel = genAI.getGenerativeModel({
+  const response = await ai.models.generateContent({
     model,
-    systemInstruction: systemPrompt,
-    generationConfig: {
+    contents: [
+      ...normalizeGeminiHistory(history),
+      { role: "user", parts: [{ text: message }] },
+    ],
+    config: {
+      systemInstruction: systemPrompt,
       temperature: 0.7,
-      maxOutputTokens: 1024,
+      maxOutputTokens: 8192,
       topP: 0.9,
     },
   });
 
-  const chat = genModel.startChat({
-    history: Array.isArray(history) ? history : [],
-  });
-
-  try {
-    const result = await chat.sendMessage(message);
-    return result.response.text();
-  } catch (error) {
-    if (isQuotaError(error) && attemptsLeft > 1 && !process.env.GEMINI_API_KEY) {
-      rotateKey();
-      return askGeminiWithRotation(
-        message,
-        history,
-        systemPrompt,
-        model,
-        attemptsLeft - 1
-      );
-    }
-    throw error;
-  }
+  const text = response.text;
+  if (!text) throw new Error("لم يرجع Gemini إجابة مؤكدة");
+  return text;
 }
 
 router.post("/gemini/chat", async (req, res) => {
@@ -92,31 +70,31 @@ router.post("/gemini/chat", async (req, res) => {
       return;
     }
 
-    const text = await askGeminiWithRotation(message, history, systemPrompt, model);
+    const text = await askGeminiSafely(message, history, systemPrompt, model);
     res.json({ text, success: true });
   } catch (error: unknown) {
-    console.error("[gemini] Error:", error);
+    logger.error({ err: error }, "Gemini request failed");
     const errMsg =
       error instanceof Error ? error.message : "خطأ في معالجة الطلب";
 
     const isQuota = isQuotaError(error);
     res.status(isQuota ? 429 : 500).json({
       error: isQuota
-        ? "انتهت حصة جميع مفاتيح Gemini. يرجى المحاولة لاحقاً."
+        ? "انتهت حصة Gemini المتاحة. يرجى المحاولة لاحقاً."
         : errMsg,
       success: false,
     });
   }
 });
 
-// Status endpoint to check which key is active (index only, never expose key value)
 router.get("/gemini/status", (_req, res) => {
-  const usingEnv = !!process.env.GEMINI_API_KEY;
+  const configured =
+    !!process.env.AI_INTEGRATIONS_GEMINI_BASE_URL &&
+    !!process.env.AI_INTEGRATIONS_GEMINI_API_KEY;
   res.json({
-    keysAvailable: usingEnv ? 1 : BUILTIN_KEYS.length,
-    currentKeyIndex: usingEnv ? "env" : currentKeyIndex,
+    configured,
     model: "gemini-2.5-flash",
-    status: "ready",
+    status: configured ? "ready" : "missing_managed_gemini_config",
   });
 });
 

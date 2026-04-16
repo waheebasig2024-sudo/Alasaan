@@ -47,7 +47,11 @@ User Input → Command Parser → Intent Classifier
     gemini.ts             ← POST /api/gemini/chat (Gemini proxy)
     health.ts             ← GET /health
 
-/Alasaan/AlHassanApp/     ← Exact Android-first app structure requested by user
+/AlHassanApp/             ← Exact Android-first app structure requested by user
+  /app/                   ← Expo Router screens
+  /src/                   ← core, memory, tools, services, security, ui
+  /assets/                ← images, icons, sounds
+  /tests/                 ← core, tools, memory, integration directories
 ```
 
 ## Tools Available (18+)

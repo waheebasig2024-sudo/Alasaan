@@ -14,3 +14,21 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * @summary Send a message to Gemini
+ */
+export const sendGeminiChatBodyModelDefault = `gemini-2.5-flash`;
+
+export const SendGeminiChatBody = zod.object({
+  message: zod.string(),
+  history: zod.array(zod.record(zod.string(), zod.unknown())).optional(),
+  systemPrompt: zod.string().optional(),
+  model: zod.string().default(sendGeminiChatBodyModelDefault),
+});
+
+export const SendGeminiChatResponse = zod.object({
+  text: zod.string().optional(),
+  success: zod.boolean(),
+  error: zod.string().optional(),
+});

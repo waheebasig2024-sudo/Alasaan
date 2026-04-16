@@ -5,18 +5,25 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 
-import type { HealthStatus } from "./api.schemas";
+import type {
+  GeminiChatRequest,
+  GeminiChatResponse,
+  HealthStatus,
+} from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
-import type { ErrorType } from "../custom-fetch";
+import type { ErrorType, BodyType } from "../custom-fetch";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -99,3 +106,89 @@ export function useHealthCheck<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary Send a message to Gemini
+ */
+export const getSendGeminiChatUrl = () => {
+  return `/api/gemini/chat`;
+};
+
+export const sendGeminiChat = async (
+  geminiChatRequest: GeminiChatRequest,
+  options?: RequestInit,
+): Promise<GeminiChatResponse> => {
+  return customFetch<GeminiChatResponse>(getSendGeminiChatUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(geminiChatRequest),
+  });
+};
+
+export const getSendGeminiChatMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sendGeminiChat>>,
+    TError,
+    { data: BodyType<GeminiChatRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof sendGeminiChat>>,
+  TError,
+  { data: BodyType<GeminiChatRequest> },
+  TContext
+> => {
+  const mutationKey = ["sendGeminiChat"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof sendGeminiChat>>,
+    { data: BodyType<GeminiChatRequest> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return sendGeminiChat(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type SendGeminiChatMutationResult = NonNullable<
+  Awaited<ReturnType<typeof sendGeminiChat>>
+>;
+export type SendGeminiChatMutationBody = BodyType<GeminiChatRequest>;
+export type SendGeminiChatMutationError = ErrorType<void>;
+
+/**
+ * @summary Send a message to Gemini
+ */
+export const useSendGeminiChat = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof sendGeminiChat>>,
+    TError,
+    { data: BodyType<GeminiChatRequest> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof sendGeminiChat>>,
+  TError,
+  { data: BodyType<GeminiChatRequest> },
+  TContext
+> => {
+  return useMutation(getSendGeminiChatMutationOptions(options));
+};

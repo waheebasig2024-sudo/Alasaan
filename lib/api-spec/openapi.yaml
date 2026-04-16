@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: gemini
+    description: Gemini assistant operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /gemini/chat:
+    post:
+      operationId: sendGeminiChat
+      tags: [gemini]
+      summary: Send a message to Gemini
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeminiChatRequest"
+      responses:
+        "200":
+          description: Gemini response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeminiChatResponse"
+        "400":
+          description: Invalid request
+        "500":
+          description: Gemini failed
 components:
   schemas:
     HealthStatus:
@@ -33,4 +57,32 @@ components:
           type: string
       required:
         - status
+    GeminiChatRequest:
+      type: object
+      properties:
+        message:
+          type: string
+        history:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        systemPrompt:
+          type: string
+        model:
+          type: string
+          default: gemini-2.5-flash
+      required:
+        - message
+    GeminiChatResponse:
+      type: object
+      properties:
+        text:
+          type: string
+        success:
+          type: boolean
+        error:
+          type: string
+      required:
+        - success
 

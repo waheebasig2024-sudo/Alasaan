@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "FuN3drC_UriHFSpa6JC8a"
+uri = "file://artifacts/al-hassan/assets/images/icon.png"
+type = "image"
+title = "AlHassan app icon"
+
+[[generated]]
+id = "XF6obbr3zFpE6F7TBK1QF"
+uri = "file://artifacts/al-hassan/assets/images/splash.png"
+type = "image"
+title = "AlHassan splash screen"

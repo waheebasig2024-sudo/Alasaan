@@ -1,0 +1,93 @@
+{
+  "expo": {
+    "name": "الحسن",
+    "slug": "al-hassan",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "al-hassan",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0F1A"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#0B0F1A"
+      },
+      "package": "com.alhassan.assistant",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR",
+        "android.permission.CALL_PHONE",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.VIBRATE",
+        "android.permission.RECEIVE_BOOT_COMPLETED"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/images/icon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://replit.com/"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser",
+      "expo-notifications",
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "السماح للحسن بالوصول إلى جهات الاتصال لتنفيذ أوامر الاتصال والمراسلة"
+        }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "السماح للحسن بالوصول إلى التقويم لإضافة المواعيد"
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "السماح للحسن بالتحقق من هويتك"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "السماح للحسن بالوصول إلى الصور",
+          "cameraPermission": "السماح للحسن باستخدام الكاميرا"
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "السماح للحسن بالوصول إلى مكتبة الصور",
+          "savePhotosPermission": "السماح للحسن بحفظ الصور"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

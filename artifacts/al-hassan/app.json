@@ -1,26 +1,38 @@
 {
   "expo": {
-    "name": "الحسن",
-    "slug": "al-hassan",
-    "version": "1.0.0",
+    "name": "الحسن المساعد الشخصي الذكي",
+    "slug": "alahsan",
+    "description": "الحسن مساعد عربي ذكي للأندرويد، تمت برمجته وتطويره بواسطة وهيب عساج.",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "al-hassan",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#0B0F1A"
     },
+    "androidStatusBar": {
+      "translucent": false,
+      "backgroundColor": "#0B0F1A"
+    },
+    "androidNavigationBar": {
+      "backgroundColor": "#0B0F1A"
+    },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "minSdkVersion": 28,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#0B0F1A"
       },
       "package": "com.alhassan.assistant",
-      "versionCode": 1,
+      "versionCode": 3,
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.READ_CONTACTS",
@@ -36,7 +48,12 @@
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT",
         "android.permission.VIBRATE",
-        "android.permission.RECEIVE_BOOT_COMPLETED"
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+        "android.permission.WAKE_LOCK",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
       ]
     },
     "plugins": [
@@ -49,6 +66,7 @@
       "expo-font",
       "expo-web-browser",
       "expo-notifications",
+      "expo-updates",
       [
         "expo-contacts",
         {
@@ -85,6 +103,21 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "geminiKeys": [],
+      "geminiModel": "gemini-2.0-flash",
+      "apiDomain": "alasan-sudo--arydan33.replit.app",
+      "eas": {
+        "projectId": "3bddef58-e3dc-47f7-9f3f-f6349e0d1908"
+      }
+    },
+    "owner": "waheebasig",
+    "updates": {
+      "url": "https://u.expo.dev/3bddef58-e3dc-47f7-9f3f-f6349e0d1908",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 5000
     }
   }
 }

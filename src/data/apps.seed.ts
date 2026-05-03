@@ -1,0 +1,130 @@
+import type { AppAlias } from "../memory/aliases-memory";
+
+export const APPS_SEED: AppAlias[] = [
+  {
+    canonical: "واتساب",
+    packageName: "com.whatsapp",
+    aliases: ["whatsapp", "واتس", "WhatsApp", "وتساب", "واتساب بيزنس"],
+    category: "social",
+  },
+  {
+    canonical: "تيليجرام",
+    packageName: "org.telegram.messenger",
+    aliases: ["telegram", "تيليغرام", "تيلقرام", "تيلغرام"],
+    category: "social",
+  },
+  {
+    canonical: "يوتيوب",
+    packageName: "com.google.android.youtube",
+    aliases: ["youtube", "يونيوب", "YouTube", "يوتيوب شورتس"],
+    category: "media",
+  },
+  {
+    canonical: "تيك توك",
+    packageName: "com.zhiliaoapp.musically",
+    aliases: ["tiktok", "tik tok", "تيكتوك", "تك توك"],
+    category: "social",
+  },
+  {
+    canonical: "انستقرام",
+    packageName: "com.instagram.android",
+    aliases: ["instagram", "انستجرام", "إنستقرام", "انستا", "insta"],
+    category: "social",
+  },
+  {
+    canonical: "سناب شات",
+    packageName: "com.snapchat.android",
+    aliases: ["snapchat", "سناب", "snap", "سناب شت"],
+    category: "social",
+  },
+  {
+    canonical: "فيسبوك",
+    packageName: "com.facebook.katana",
+    aliases: ["facebook", "فيس", "fb", "فيسبوك"],
+    category: "social",
+  },
+  {
+    canonical: "تويتر",
+    packageName: "com.twitter.android",
+    aliases: ["twitter", "x", "تويتر", "إكس", "اكس"],
+    category: "social",
+  },
+  {
+    canonical: "كاميرا",
+    packageName: "android.media.action.STILL_IMAGE_CAMERA",
+    aliases: ["camera", "الكاميرا", "صور", "تصوير"],
+    category: "system",
+  },
+  {
+    canonical: "خرائط جوجل",
+    packageName: "com.google.android.apps.maps",
+    aliases: ["google maps", "خرائط", "maps", "جوجل ماب", "ماب"],
+    category: "navigation",
+  },
+  {
+    canonical: "كروم",
+    packageName: "com.android.chrome",
+    aliases: ["chrome", "google chrome", "المتصفح", "متصفح", "جوجل كروم"],
+    category: "browser",
+  },
+  {
+    canonical: "إعدادات",
+    packageName: "android.settings.SETTINGS",
+    aliases: ["settings", "الإعدادات", "ضبط", "Setting"],
+    category: "system",
+  },
+  {
+    canonical: "نتفليكس",
+    packageName: "com.netflix.mediaclient",
+    aliases: ["netflix", "نتفلكس", "نيتفليكس"],
+    category: "media",
+  },
+  {
+    canonical: "أمازون",
+    packageName: "com.amazon.mShop.android.shopping",
+    aliases: ["amazon", "امازون", "Amazon"],
+    category: "shopping",
+  },
+  {
+    canonical: "جيميل",
+    packageName: "com.google.android.gm",
+    aliases: ["gmail", "البريد", "بريد", "email", "ايميل", "جيمل"],
+    category: "productivity",
+  },
+  {
+    canonical: "موسيقى سبوتيفاي",
+    packageName: "com.spotify.music",
+    aliases: ["spotify", "سبوتيفاي", "موسيقى", "music", "اسبوتيفاي"],
+    category: "media",
+  },
+  {
+    canonical: "جوجل بلاي",
+    packageName: "com.android.vending",
+    aliases: ["play store", "بلاي ستور", "google play", "المتجر", "متجر"],
+    category: "system",
+  },
+  {
+    canonical: "كاميرا سناب",
+    packageName: "com.snapchat.android",
+    aliases: ["snap camera"],
+    category: "media",
+  },
+  {
+    canonical: "كاميرا تيك توك",
+    packageName: "com.zhiliaoapp.musically",
+    aliases: ["tiktok camera"],
+    category: "media",
+  },
+  {
+    canonical: "لينكدإن",
+    packageName: "com.linkedin.android",
+    aliases: ["linkedin", "لينكدين", "linked in"],
+    category: "social",
+  },
+  {
+    canonical: "جوجل",
+    packageName: "com.google.android.googlequicksearchbox",
+    aliases: ["google", "بحث جوجل", "google search"],
+    category: "browser",
+  },
+];
